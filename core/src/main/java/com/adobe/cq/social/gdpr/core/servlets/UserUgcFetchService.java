@@ -157,7 +157,7 @@ public class UserUgcFetchService extends SlingAllMethodsServlet {
 
     private String createJsonResponse(Map<ComponentEnum, SearchResults<Resource>> resultsList) throws ServletException {
         StringBuilder response = new StringBuilder();
-        final StringWriter stringWriter = new StringWriter();
+
         boolean isEmpty = true;
         response.append("[");
         final JsonItemWriter jsonWriter = new JsonItemWriter(null);
@@ -165,6 +165,7 @@ public class UserUgcFetchService extends SlingAllMethodsServlet {
             for (Map.Entry<ComponentEnum, SearchResults<Resource>> entry : resultsList.entrySet()) {
                 for (Resource resultRes : entry.getValue().getResults()) {
                     Node node = null;
+                    final StringWriter stringWriter = new StringWriter();
 
                     node = resultRes.getResourceResolver().adaptTo(Session.class).getNode(resultRes.getPath());
 

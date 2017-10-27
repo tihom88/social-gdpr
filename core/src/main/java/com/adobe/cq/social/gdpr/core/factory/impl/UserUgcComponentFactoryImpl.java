@@ -2,8 +2,8 @@ package com.adobe.cq.social.gdpr.core.factory.impl;
 
 import com.adobe.cq.social.gdpr.core.UserUgcCommons.ComponentEnum;
 import com.adobe.cq.social.gdpr.core.UserUgcCommons.UserUgcFilter;
-import com.adobe.cq.social.gdpr.core.blog.blogComment.BlogCommentUserUgcFilter;
-import com.adobe.cq.social.gdpr.core.blog.blogEntry.BlogEntryUserUgcFilter;
+import com.adobe.cq.social.gdpr.core.components.blog.blogComment.BlogCommentUserUgcFilter;
+import com.adobe.cq.social.gdpr.core.components.blog.blogEntry.BlogEntryUserUgcFilter;
 import com.adobe.cq.social.gdpr.core.factory.UserUgcComponentFactory;
 import com.adobe.cq.social.calendar.client.endpoints.CalendarOperations;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
