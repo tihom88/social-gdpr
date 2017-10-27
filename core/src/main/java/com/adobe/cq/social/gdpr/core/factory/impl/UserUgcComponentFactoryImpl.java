@@ -92,6 +92,10 @@ public class UserUgcComponentFactoryImpl implements UserUgcComponentFactory {
             case BLOG_COMMENT:
                 commentOperations = journalOperations;
                 break;
+            case FORUM_ENTRY:
+            case FORUM_COMMENT:
+                commentOperations = forumOperations;
+                break;
             default:
                 throw new RuntimeException("ComponentEnum not defined for operation");
         }

@@ -84,14 +84,15 @@ public class UserUgcFetchService extends SlingAllMethodsServlet {
             }
         }
 
-        resp.setContentType("application/octet-stream");
-        final String headerKey = "Content-Disposition";
-        final String headerValue = "attachment; filename=\""+user+"-UgcData.zip" +"\"";
-        resp.setHeader(headerKey, headerValue);
+//        resp.setContentType("application/octet-stream");
+//        final String headerKey = "Content-Disposition";
+//        final String headerValue = "attachment; filename=\""+user+"-UgcData.zip" +"\"";
+//        resp.setHeader(headerKey, headerValue);
 
         String userUgcJson = null;
         userUgcJson = createJsonResponse(resultsList);
-        createZip(req, resp, userUgcJson, attachmentPaths);
+//        createZip(req, resp, userUgcJson, attachmentPaths);
+        resp.getOutputStream().println(userUgcJson);
     }
 
     private void createZip(final SlingHttpServletRequest req,
