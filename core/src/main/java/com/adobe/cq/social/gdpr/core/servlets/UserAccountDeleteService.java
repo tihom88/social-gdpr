@@ -24,6 +24,7 @@ import javax.jcr.RepositoryException;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 //import org.apache.sling.commons.json.JSONObject;
@@ -64,7 +65,7 @@ public class UserAccountDeleteService extends SlingAllMethodsServlet {
         final SocialResourceProvider srp = socialResourceUtilities.getSocialResourceProvider(resource);
         srp.setConfig(storageConfig);
 
-        List<ComponentEnum> componentEnumList = getComponentEnumList();
+        List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());
         try {
             gdprService.deleteUserUgc(resourceResolver,componentEnumList, user);
             gdprService.deleteUserAccount(resourceResolver,user);
@@ -75,12 +76,4 @@ public class UserAccountDeleteService extends SlingAllMethodsServlet {
         }
         resp.getOutputStream().println("UGC for user"+user+ " deleted");
     }
-
-    private List<ComponentEnum> getComponentEnumList(){
-        List<ComponentEnum> componentEnumList = new ArrayList<ComponentEnum>();
-        componentEnumList.add(ComponentEnum.BLOG_COMMENT);
-        componentEnumList.add(ComponentEnum.BLOG_ENTRY);
-        return componentEnumList;
-    }
-
 }

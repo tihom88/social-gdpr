@@ -4,6 +4,8 @@ import com.adobe.cq.social.gdpr.core.UserUgcCommons.ComponentEnum;
 import com.adobe.cq.social.gdpr.core.UserUgcCommons.UserUgcFilter;
 import com.adobe.cq.social.gdpr.core.components.blog.blogComment.BlogCommentUserUgcFilter;
 import com.adobe.cq.social.gdpr.core.components.blog.blogEntry.BlogEntryUserUgcFilter;
+import com.adobe.cq.social.gdpr.core.components.forum.forumComment.ForumCommentUserUgcFilter;
+import com.adobe.cq.social.gdpr.core.components.forum.forumTopic.ForumEntryUserUgcFilter;
 import com.adobe.cq.social.gdpr.core.factory.UserUgcComponentFactory;
 import com.adobe.cq.social.calendar.client.endpoints.CalendarOperations;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
@@ -68,6 +70,12 @@ public class UserUgcComponentFactoryImpl implements UserUgcComponentFactory {
                 break;
             case BLOG_COMMENT:
                 userUgcFilter = new BlogCommentUserUgcFilter();
+                break;
+            case FORUM_ENTRY:
+                userUgcFilter = new ForumEntryUserUgcFilter();
+                break;
+            case FORUM_COMMENT:
+                userUgcFilter = new ForumCommentUserUgcFilter();
                 break;
             default:
                 throw new RuntimeException("ComponentEnum not defined for fetching userContent");

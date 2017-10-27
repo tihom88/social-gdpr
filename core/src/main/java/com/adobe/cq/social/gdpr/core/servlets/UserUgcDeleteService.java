@@ -24,6 +24,7 @@ import javax.jcr.Session;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 //import org.apache.sling.commons.json.JSONObject;
@@ -65,21 +66,13 @@ public class UserUgcDeleteService extends SlingAllMethodsServlet {
         srp.setConfig(storageConfig);
 
         resourceResolver.adaptTo(Session.class);
-        List<ComponentEnum> componentEnumList = getComponentEnumList();
+        List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());
         try {
             gdprService.deleteUserUgc(resourceResolver,componentEnumList, user);
         } catch (OperationException e) {
             throw new ServletException(e);
         }
         resp.getOutputStream().println("UGC for user"+user+ " deleted");
-    }
-
-    private List<ComponentEnum> getComponentEnumList(){
-        List<ComponentEnum> componentEnumList = new ArrayList<ComponentEnum>();
-        componentEnumList.add(ComponentEnum.BLOG_COMMENT);
-        componentEnumList.add(ComponentEnum.BLOG_ENTRY);
-
-        return componentEnumList;
     }
 
     private String createJsonResponse(SearchResults<Resource> results) {

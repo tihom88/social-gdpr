@@ -25,10 +25,7 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.servlet.ServletException;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.zip.ZipOutputStream;
 import javax.jcr.Node;
 
@@ -75,15 +72,12 @@ public class UserUgcFetchService extends SlingAllMethodsServlet {
         final SocialResourceProvider srp = socialResourceUtilities.getSocialResourceProvider(resource);
         srp.setConfig(storageConfig);
 
-
-        List<ComponentEnum> componentEnumList = getComponentEnumList();
+        List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());
         Map<ComponentEnum, SearchResults<Resource>> resultsList = gdprService.getUserUgc(resourceResolver, componentEnumList, user);
-
-
         List<String> attachmentPaths = new ArrayList<String>();
         for (Map.Entry<ComponentEnum, SearchResults<Resource>> entry : resultsList.entrySet()) {
             for (Resource resourceNode : entry.getValue().getResults()) {
-                String[] images = (String[]) resourceNode.getValueMap().get("social:attachments");
+                String[] images = resourceNode.getValueMap().get("social:attachments") == null? new String[0] : (String[]) resourceNode.getValueMap().get("social:attachments") ;
                 for (String imagePath : images) {
                     attachmentPaths.add(imagePath);
                 }
@@ -145,14 +139,6 @@ public class UserUgcFetchService extends SlingAllMethodsServlet {
             }
         }
 
-    }
-
-    private List<ComponentEnum> getComponentEnumList() {
-        List<ComponentEnum> componentEnumList = new ArrayList<ComponentEnum>();
-        componentEnumList.add(ComponentEnum.BLOG_COMMENT);
-        componentEnumList.add(ComponentEnum.BLOG_ENTRY);
-
-        return componentEnumList;
     }
 
     private String createJsonResponse(Map<ComponentEnum, SearchResults<Resource>> resultsList) throws ServletException {
