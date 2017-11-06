@@ -6,6 +6,9 @@ import com.adobe.cq.social.gdpr.core.gdprService.GdprService;
 import com.adobe.cq.social.forum.client.endpoints.ForumOperations;
 import com.adobe.cq.social.journal.client.endpoints.JournalOperations;
 import com.adobe.cq.social.scf.OperationException;
+import com.adobe.cq.social.srp.SocialResourceProvider;
+import com.adobe.cq.social.srp.config.SocialResourceConfiguration;
+import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.SearchResults;
 import com.adobe.cq.social.ugc.api.UgcFilter;
 import com.adobe.cq.social.ugc.api.UgcSearch;
@@ -40,6 +43,9 @@ public class GdprServiceImpl implements GdprService{
     UgcSearch ugcSearch;
 
     @Reference
+    private SocialResourceUtilities socialResourceUtilities;
+
+    @Reference
     protected ForumOperations forumOperations;
 
     @Reference
@@ -69,7 +75,7 @@ public class GdprServiceImpl implements GdprService{
 
         final Session session = resourceResolver.adaptTo(Session.class);
         for(Map.Entry<ComponentEnum, SearchResults<Resource>> entry : searchResults.entrySet()){
-            deleteResources(entry.getKey(), entry.getValue(), session);
+            deleteResources(resourceResolver, entry.getKey(), entry.getValue(), session);
             /*switch (entry.getKey()){
                 case BLOG_COMMENT:
                     deleteResources(ComponentEnum.BLOG_COMMENT, entry.getValue(), session);
@@ -86,9 +92,22 @@ public class GdprServiceImpl implements GdprService{
         return true;
     }
 
-    private void deleteResources(ComponentEnum componentEnum, SearchResults<Resource> resources, Session session) throws OperationException {
+    private void deleteResources(ResourceResolver resourceResolver, ComponentEnum componentEnum, SearchResults<Resource> resources, Session session) throws OperationException {
+
+
+
         for (Resource resource: resources.getResults()) {
-            userUgcComponentFactory.getOperation(componentEnum).delete(resource, session);
+            final SocialResourceConfiguration storageConfig = socialResourceUtilities.getStorageConfig(   resource); //socialUtils.getStorageConfig(resource);
+            final SocialResourceProvider srp = socialResourceUtilities.getSocialResourceProvider(resource);
+            srp.setConfig(storageConfig);
+            boolean isUgcPresent = srp.getResource(resourceResolver, resource.getPath()) != null ? true: false;
+            if (isUgcPresent) {
+                userUgcComponentFactory.getOperation(componentEnum).delete(resource, session);
+            }
+            else{
+                log.info("resource not present :" + resource.getPath());
+            }
+
         }
     }
 
